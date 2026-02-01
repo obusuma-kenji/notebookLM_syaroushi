@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITが苦手な社労士のためのNotebookLM実務活用入門｜調べる時間を「考える時間」へ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ヘッダー */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 20px 50px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.1)" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,144C960,149,1056,139,1152,122.7C1248,107,1344,85,1392,74.7L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: cover;
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            line-height: 1.3;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .hero .subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            font-weight: 500;
+            opacity: 0.95;
+        }
+
+        .hero .catch-copy {
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            background: rgba(255,255,255,0.2);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* セクション */
+        .section {
+            padding: 60px 20px;
+        }
+
+        .section-white {
+            background-color: white;
+        }
+
+        .section-gray {
+            background-color: #f8f9fa;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: #2d3748;
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        /* メイン画像 */
+        .main-image-section {
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .main-image {
+            max-width: 90%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+
+        /* 動画セクション */
+        .video-container {
+            max-width: 900px;
+            margin: 30px auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+
+        .video-container video {
+            width: 100%;
+            display: block;
+        }
+
+        .video-caption {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.95rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* 特徴グリッド */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 4px solid #667eea;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+
+        .feature-description {
+            color: #4a5568;
+            line-height: 1.8;
+        }
+
+        /* 目次 */
+        .toc {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .toc-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #2d3748;
+            text-align: center;
+        }
+
+        .toc-list {
+            list-style: none;
+        }
+
+        .toc-item {
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            background: #f7fafc;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            transition: background 0.3s;
+        }
+
+        .toc-item:hover {
+            background: #edf2f7;
+        }
+
+        .toc-chapter {
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+
+        .toc-details {
+            font-size: 0.9rem;
+            color: #718096;
+        }
+
+        /* ダウンロードボタン */
+        .download-section {
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .download-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .download-description {
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+
+        .btn-download {
+            display: inline-block;
+            padding: 20px 50px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .btn-download:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .file-info {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* 著者情報 */
+        .author-section {
+            background: white;
+            padding: 50px 20px;
+        }
+
+        .author-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .author-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #2d3748;
+        }
+
+        .author-description {
+            font-size: 1.05rem;
+            line-height: 1.9;
+            color: #4a5568;
+            text-align: left;
+        }
+
+        /* フッター */
+        footer {
+            background: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        footer p {
+            margin-bottom: 10px;
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .hero {
+                padding: 40px 20px 30px;
+            }
+
+            .section {
+                padding: 40px 20px;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .download-title {
+                font-size: 1.5rem;
+            }
+
+            .btn-download {
+                padding: 15px 35px;
+                font-size: 1rem;
+            }
+
+            .main-image {
+                max-width: 100%;
+            }
+        }
+
+        /* アクセント */
+        .highlight {
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        /* 強調ボックス */
+        .emphasis-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fcd34d 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border-left: 5px solid #f59e0b;
+        }
+
+        .emphasis-box p {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #78350f;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+    <!-- ヒーローセクション -->
+    <section class="hero">
+        <div class="hero-content container">
+            <div class="badge">社労士実務支援</div>
+            <h1>ITが苦手な社労士のための<br>NotebookLM実務活用入門</h1>
+            <p class="subtitle">調べる時間を「考える時間」へ</p>
+            <div class="catch-copy">
+                <p>AIという言葉に身構えてしまう、あなたのための一冊。<br>
+                プログラミング不要・専門用語なし・使いこなす必要もありません。<br>
+                必要なのは「今の業務を少し楽にしたい」その気持ちだけです。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- メイン画像 -->
+    <section class="section section-white" style="padding: 40px 20px;">
+        <div class="container">
+            <div style="max-width: 1000px; margin: 0 auto; text-align: center;">
+                <img src="unnamed__22_.png" alt="NotebookLM実務活用ガイド" class="main-image" style="max-width: 90%; height: auto;">
+            </div>
+        </div>
+    </section>
+
+    <!-- ★新規追加：2つの動画セクション -->
+    <section class="section section-gray">
+        <div class="container">
+            <h2 class="section-title">グラウンデッドAIとは</h2>
+            <div class="video-container">
+                <video controls poster="">
+                    <source src="グラウンデッドAI_send.mp4" type="video/mp4">
+                    お使いのブラウザは動画タグをサポートしていません。
+                </video>
+            </div>
+            <p class="video-caption">グラウンデッドAIの基本概念をわかりやすく解説します</p>
+        </div>
+    </section>
+
+    <section class="section section-white">
+        <div class="container">
+            <h2 class="section-title">NotebookLMの基礎</h2>
+            <div class="video-container">
+                <video controls poster="">
+                    <source src="NotebookLM_send.mp4" type="video/mp4">
+                    お使いのブラウザは動画タグをサポートしていません。
+                </video>
+            </div>
+            <p class="video-caption">NotebookLMの基本的な使い方をステップバイステップでご紹介</p>
+        </div>
+    </section>
+    <!-- ★ここまで新規追加 -->
+
+    <!-- 動画1：社労士のためのNotebookLM -->
+    <section class="section section-gray">
+        <div class="container">
+            <h2 class="section-title">実務での活用イメージをご覧ください</h2>
+            <div class="video-container">
+                <video controls poster="">
+                    <source src="社労士のためのNotebookLM実務活用入門_send.mp4" type="video/mp4">
+                    お使いのブラウザは動画タグをサポートしていません。
+                </video>
+            </div>
+            <p class="video-caption">社労士業務でNotebookLMをどう使うか、具体的にご紹介します</p>
+        </div>
+    </section>
+
+    <!-- こんな悩みはありませんか -->
+    <section class="section section-white">
+        <div class="container">
+            <h2 class="section-title">こんな悩みはありませんか？</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⏰</div>
+                    <h3 class="feature-title">法改正確認に時間がかかる</h3>
+                    <p class="feature-description">毎年の法改正。雇用保険、健康保険、育児・介護関連...改正内容を把握するだけで半日が終わってしまう。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">❓</div>
+                    <h3 class="feature-title">顧問先の質問に即答できない</h3>
+                    <p class="feature-description">「確認して後ほど連絡します」と答えることが多い。過去に似た質問を扱ったはずなのに、資料がどこにあるか分からない。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📁</div>
+                    <h3 class="feature-title">過去資料を探すだけで疲れる</h3>
+                    <p class="feature-description">フォルダを開いては閉じ、ファイル名を眺めてはため息。「探す時間」が「考える時間」を奪っている。</p>
+                </div>
+            </div>
+
+            <div class="emphasis-box">
+                <p>NotebookLMは、この「調べる時間」を劇的に減らします。<br>
+                膨大な資料の中から、必要な情報を一瞬で引き出せるようになります。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- NotebookLMとは -->
+    <section class="section section-gray">
+        <div class="container">
+            <h2 class="section-title">NotebookLMとは何か</h2>
+            
+            <div style="max-width: 800px; margin: 0 auto;">
+                <div style="background: white; padding: 40px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); margin-bottom: 30px;">
+                    <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; color: #2d3748;">ChatGPTとの決定的な違い</h3>
+                    <p style="margin-bottom: 15px; line-height: 1.8;">ChatGPTは、インターネット上の膨大な情報をもとに一般的な回答を作るAIです。</p>
+                    <p style="margin-bottom: 15px; line-height: 1.8;">一方、<strong class="highlight">NotebookLMは、自分が用意した資料だけを読み込んで答えるAI</strong>です。</p>
+                    <div style="background: #f7fafc; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                        <p style="font-weight: 600; margin-bottom: 10px;">● ChatGPT：広く浅い知識</p>
+                        <p style="font-weight: 600;">● NotebookLM：狭く深い知識</p>
+                    </div>
+                    <p style="margin-top: 20px; line-height: 1.8;">社労士業務では、「一般論」よりも「根拠」が重要です。NotebookLMは、社労士が日常的に使う資料を理解した上で回答します。</p>
+                </div>
+
+                <div style="background: white; padding: 40px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08);">
+                    <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; color: #2d3748;">「賢い書類棚」という考え方</h3>
+                    <p style="margin-bottom: 15px; line-height: 1.8;">NotebookLMを一言で表すなら、<strong class="highlight">「賢い書類棚」</strong>です。</p>
+                    <div style="background: #f7fafc; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                        <p style="margin-bottom: 10px;">✓ 書類を覚えてくれる</p>
+                        <p style="margin-bottom: 10px;">✓ 質問すると探してくれる</p>
+                        <p>✓ 要点をまとめてくれる</p>
+                    </div>
+                    <p style="margin-top: 20px; line-height: 1.8;">社労士の仕事を奪うものではありません。社労士の仕事を楽に、正確にする存在です。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 動画2：AI活用術 -->
+    <section class="section section-white">
+        <div class="container">
+            <h2 class="section-title">AI活用の基本：検索から統合へ</h2>
+            <div class="video-container">
+                <video controls poster="">
+                    <source src="AI活用術_検索から統合へ_send.mp4" type="video/mp4">
+                    お使いのブラウザは動画タグをサポートしていません。
+                </video>
+            </div>
+            <p class="video-caption">NotebookLMを使った効率的な情報整理術をご紹介</p>
+        </div>
+    </section>
+
+    <!-- 実務での活用例 -->
+    <section class="section section-gray">
+        <div class="container">
+            <h2 class="section-title">実務を劇的に楽にする活用例</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3 class="feature-title">労務相談での活用</h3>
+                    <p class="feature-description">顧問先からの質問を即座に整理。条文・通達の根拠を一瞬で引き、回答文のたたき台を作成。「即答できない不安」が減ります。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3 class="feature-title">資料作成が楽に</h3>
+                    <p class="feature-description">説明資料の下書き作成、セミナー資料の構成、顧問先向け文章の平易化。「書く前の悩み」が消え、考える仕事に集中できます。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎤</div>
+                    <h3 class="feature-title">音声解説機能</h3>
+                    <p class="feature-description">資料を音声で解説。通勤中に法改正を学習、セミナーの予習・復習が可能に。「ながら学習」で知識の定着率が上がります。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">スライド自動生成</h3>
+                    <p class="feature-description">プレゼン資料を自動作成。セミナー資料、顧問先説明会の構成案が数分で完成。資料作成時間が半分になります。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📋</div>
+                    <h3 class="feature-title">レポート・要約</h3>
+                    <p class="feature-description">数百ページの法改正資料も、数分で要点を抽出。判例整理、顧問先資料の事前整理が瞬時に完了します。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">❓</div>
+                    <h3 class="feature-title">FAQ自動生成</h3>
+                    <p class="feature-description">顧問先向けQ&A、事務所マニュアルを自動作成。業務の標準化と属人化の解消を実現します。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 本書の内容 -->
+    <section class="section section-white">
+        <div class="container">
+            <h2 class="section-title">本書の内容</h2>
+            <div class="toc">
+                <h3 class="toc-title">全8章で完全マスター</h3>
+                <ul class="toc-list">
+                    <li class="toc-item">
+                        <div class="toc-chapter">はじめに</div>
+                        <div class="toc-details">AIを使えないことは、恥ではありません</div>
+                    </li>
+                    <li class="toc-item">
+                        <div class="toc-chapter">第1章｜社労士業務は「調べる時間」が多すぎる</div>
+                        <div class="toc-details">法改正確認、顧問先対応、過去資料検索に時間を奪われる現状</div>
+                    </li>
+                    <li class="toc-item">
+                        <div class="toc-chapter">第2章｜NotebookLMとは何か</div>
+                        <div class="toc-details">ChatGPTとの違い、社労士が安心して使える理由</div>
+                    </li>
+                    <li class="toc-item">
+                        <div class="toc-chapter">第3章｜まずはここから：基本設定と最初の一歩</div>
+                        <div class="toc-details">何をアップロードするか、失敗しないデータ整理方法</div>
+                    </li>
+                    <li class="toc-item">
+                        <div class="toc-chapter">第4章｜【労務相談】NotebookLM活用実例</div>
+                        <div class="toc-details">質問の整理、根拠の引用、回答文作成の実践例</div>
+                    </li>
+                    <li class="toc-item">
+                        <div class="toc-chapter">第5章｜【資料作成】が楽になる使い方</div>
+                        <div class="toc-details">説明資料、セミナー資料、顧問先向け文章の効率化</div>
+                    </li>
+                    <li class="toc-item">
+                        <div class="toc-chapter">第6章｜社労士がやってはいけない使い方</div>
+                        <div class="toc-details">AI任せにしない、誤回答を防ぐチェック方法</div>
+                    </li>
+                    <li class="toc-item">
+                        <div class="toc-chapter">第7章｜使う社労士と使わない社労士の差</div>
+                        <div class="toc-details">仕事のスピード、顧問先評価、将来の実務スタイルの違い</div>
+                    </li>
+                    <li class="toc-item">
+                        <div class="toc-chapter">第8章｜各機能を社労士実務にどう使うか</div>
+                        <div class="toc-details">音声解説、スライド、レポート、FAQ、データベース機能の活用法</div>
+                    </li>
+                    <li class="toc-item">
+                        <div class="toc-chapter">おわりに・あとがき</div>
+                        <div class="toc-details">道具が変わっても、仕事の本質は変わらない</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- プロとして安全に使うための鉄則 -->
+    <section class="section section-gray">
+        <div class="container">
+            <h2 class="section-title">プロとして安全に使うための鉄則</h2>
+            
+            <div style="max-width: 800px; margin: 0 auto;">
+                <div style="background: white; padding: 40px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); margin-bottom: 30px;">
+                    <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 20px; color: #dc2626;">❌ やってはいけないこと</h3>
+                    <div style="padding: 20px; background: #fef2f2; border-left: 4px solid #dc2626; border-radius: 8px; margin-bottom: 15px;">
+                        <p style="font-weight: 600; color: #991b1b;">AI任せにしない</p>
+                        <p style="margin-top: 10px; color: #7f1d1d;">最終判断をAIに任せることは絶対に避ける</p>
+                    </div>
+                    <div style="padding: 20px; background: #fef2f2; border-left: 4px solid #dc2626; border-radius: 8px; margin-bottom: 15px;">
+                        <p style="font-weight: 600; color: #991b1b;">古い資料を混ぜない</p>
+                        <p style="margin-top: 10px; color: #7f1d1d;">法改正前の条文が混ざると、誤った結論を出す可能性</p>
+                    </div>
+                    <div style="padding: 20px; background: #fef2f2; border-left: 4px solid #dc2626; border-radius: 8px;">
+                        <p style="font-weight: 600; color: #991b1b;">そのまま転送はNG</p>
+                        <p style="margin-top: 10px; color: #7f1d1d;">AIが作った文章をそのまま顧問先に送らない</p>
+                    </div>
+                </div>
+
+                <div style="background: white; padding: 40px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08);">
+                    <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 20px; color: #059669;">✅ 必ず守ること</h3>
+                    <div style="padding: 20px; background: #f0fdf4; border-left: 4px solid #059669; border-radius: 8px; margin-bottom: 15px;">
+                        <p style="font-weight: 600; color: #065f46;">責任は社労士本人</p>
+                        <p style="margin-top: 10px; color: #064e3b;">AIはあくまで道具。判断と責任は人が持つ</p>
+                    </div>
+                    <div style="padding: 20px; background: #f0fdf4; border-left: 4px solid #059669; border-radius: 8px; margin-bottom: 15px;">
+                        <p style="font-weight: 600; color: #065f46;">必ず確認する</p>
+                        <p style="margin-top: 10px; color: #064e3b;">根拠となる条文や通達が正しいか、必ずチェック</p>
+                    </div>
+                    <div style="padding: 20px; background: #f0fdf4; border-left: 4px solid #059669; border-radius: 8px;">
+                        <p style="font-weight: 600; color: #065f46;">下書きとして使う</p>
+                        <p style="margin-top: 10px; color: #064e3b;">AIの回答は「たたき台」。自分の言葉に直す</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ダウンロードセクション -->
+    <section class="download-section">
+        <div class="container">
+            <h2 class="download-title">今すぐ電子書籍をダウンロード</h2>
+            <p class="download-description">
+                ITが苦手な社労士のために書かれた、実践的な活用ガイド<br>
+                プログラミング不要・専門用語なし・読んだその日から使えます
+            </p>
+            <a href="ITが苦手な社労士のためのNotebookLM実務活用入門_完全版.docx" download class="btn-download">
+                📥 完全版をダウンロード（無料）
+            </a>
+            <p class="file-info">ファイル形式：Word文書（.docx）｜Google Docsでも開けます</p>
+        </div>
+    </section>
+
+    <!-- 著者からのメッセージ -->
+    <section class="author-section">
+        <div class="author-content">
+            <h2 class="author-title">著者からのメッセージ</h2>
+            <div class="author-description">
+                <p style="margin-bottom: 20px;">
+                    本書をここまで読んでいただき、ありがとうございます。
+                </p>
+                <p style="margin-bottom: 20px;">
+                    私は社会保険労務士として、AIやITツールに戸惑う同業者の方々を数多く見てきました。「使わなければならない」というプレッシャーと、「間違えたら怖い」という不安の間で悩む姿です。
+                </p>
+                <p style="margin-bottom: 20px;">
+                    しかし、NotebookLMは違います。これは「使いこなす」ためのツールではなく、「日常を少し楽にする」ための道具です。
+                </p>
+                <p style="margin-bottom: 20px;">
+                    <strong>全部理解する必要はありません。一つでも「これは使えそうだ」と感じる部分があれば、それで十分です。</strong>
+                </p>
+                <p style="margin-bottom: 20px;">
+                    ITやAIが苦手でも、真面目に実務を積み重ねてきた社労士は、これからも必要とされます。NotebookLMは、その実務を支える脇役です。
+                </p>
+                <p style="font-weight: 700; font-size: 1.1rem; text-align: center; margin-top: 30px; color: #667eea;">
+                    主役は、あなた自身です。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 事務所紹介 -->
+    <section class="section section-gray">
+        <div class="container">
+            <h2 class="section-title">おぶすま社会保険労士事務所について</h2>
+            <div style="max-width: 800px; margin: 0 auto; text-align: center; margin-bottom: 30px;">
+                <p style="font-size: 1.1rem; line-height: 1.8; color: #4a5568;">
+                    社会保険労務士・行政書士として、外国人雇用支援とAI活用コンサルティングを専門としています。<br>
+                    従来の労務管理に最新のテクノロジーを組み合わせ、実務の効率化をサポートします。
+                </p>
+            </div>
+            <div class="video-container">
+                <video controls poster="">
+                    <source src="おぶすま事務所の事業内容と保有資格_send.mp4" type="video/mp4">
+                    お使いのブラウザは動画タグをサポートしていません。
+                </video>
+            </div>
+            <p class="video-caption">おぶすま事務所の事業内容と保有資格のご紹介</p>
+        </div>
+    </section>
+
+    <!-- フッター -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 おぶすま社会保険労務士事務所</p>
+            <p>ITが苦手な社労士のためのNotebookLM実務活用入門</p>
+        </div>
+    </footer>
+</body>
+</html>
