@@ -396,9 +396,50 @@
             color: #78350f;
             line-height: 1.8;
         }
+
+        /* 音声コントロール */
+        .audio-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50px;
+            padding: 10px 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .audio-control:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: scale(1.05);
+        }
+
+        .audio-icon {
+            font-size: 1.2rem;
+        }
     </style>
 </head>
 <body>
+    <!-- 背景音声 -->
+    <audio id="bgMusic" loop>
+        <source src="background-music.wav" type="audio/wav">
+        お使いのブラウザは音声タグをサポートしていません。
+    </audio>
+
+    <!-- 音声コントロールボタン -->
+    <div class="audio-control" id="audioControl" onclick="toggleAudio()">
+        <span class="audio-icon" id="audioIcon">🔊</span>
+        <span id="audioText">音楽ON</span>
+    </div>
+
     <!-- ヒーローセクション -->
     <section class="hero">
         <div class="hero-content container">
@@ -771,5 +812,71 @@
             <p>ITが苦手な社労士のためのNotebookLM実務活用入門</p>
         </div>
     </footer>
+
+    <script>
+        // 背景音楽の自動再生制御
+        const bgMusic = document.getElementById('bgMusic');
+        const audioIcon = document.getElementById('audioIcon');
+        const audioText = document.getElementById('audioText');
+        let isPlaying = false;
+
+        // ページ読み込み時に自動再生を試みる
+        window.addEventListener('load', function() {
+            // 音量を適度に設定（0.0〜1.0）
+            bgMusic.volume = 0.3;
+            
+            // 自動再生を試みる
+            const playPromise = bgMusic.play();
+            
+            if (playPromise !== undefined) {
+                playPromise
+                    .then(() => {
+                        // 自動再生成功
+                        isPlaying = true;
+                        updateAudioButton();
+                    })
+                    .catch(error => {
+                        // 自動再生がブロックされた場合
+                        console.log('自動再生がブロックされました。ボタンをクリックして再生してください。');
+                        isPlaying = false;
+                        updateAudioButton();
+                    });
+            }
+        });
+
+        // 音声のトグル機能
+        function toggleAudio() {
+            if (isPlaying) {
+                bgMusic.pause();
+                isPlaying = false;
+            } else {
+                bgMusic.play();
+                isPlaying = true;
+            }
+            updateAudioButton();
+        }
+
+        // ボタン表示の更新
+        function updateAudioButton() {
+            if (isPlaying) {
+                audioIcon.textContent = '🔊';
+                audioText.textContent = '音楽ON';
+            } else {
+                audioIcon.textContent = '🔇';
+                audioText.textContent = '音楽OFF';
+            }
+        }
+
+        // ユーザーが最初にページをクリックしたら音楽を再生
+        let firstInteraction = true;
+        document.addEventListener('click', function() {
+            if (firstInteraction && !isPlaying) {
+                bgMusic.play();
+                isPlaying = true;
+                updateAudioButton();
+                firstInteraction = false;
+            }
+        }, { once: false });
+    </script>
 </body>
 </html>
